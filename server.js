@@ -7,7 +7,7 @@ client.connect();
 
 const app = require('./lib/app');
 
-const PORT = process.env.PORT || 4444;
+const PORT = process.env.PORT || 3001;
 // Auth
 const ensureAuth = require('./lib/auth/ensure-auth');
 const createAuthRoutes = require('./lib/auth/create-auth-routes');
@@ -36,7 +36,6 @@ const authRoutes = createAuthRoutes({
 // setup authentication routes to give user an auth token
 // creates a /signin and a /signup route. 
 // each requires a POST body with a .email and a .password
-
 app.use('/api/auth', authRoutes);
 
 // everything that starts with "/api" below here requires an auth token!
@@ -48,8 +47,8 @@ app.get('/api/test', (req, res) => {
   });
 });
 
-app.get('/animals', async(req, res) => {
-  const data = await client.query('SELECT * from animals');
+app.get('/todos', async(req, res) => {
+  const data = await client.query('SELECT * from todos');
 
   res.json(data.rows);
 });
