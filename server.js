@@ -11,10 +11,11 @@ const PORT = process.env.PORT || 3001;
 // Auth
 const ensureAuth = require('./lib/auth/ensure-auth');
 const createAuthRoutes = require('./lib/auth/create-auth-routes');
+
 const authRoutes = createAuthRoutes({
   selectUser(email) {
     return client.query(`
-            SELECT id, email, hash, display_name as "displayName" 
+            SELECT id, email, hash 
             FROM users
             WHERE email = $1;
         `,
@@ -24,11 +25,11 @@ const authRoutes = createAuthRoutes({
   insertUser(user, hash) {
     console.log(user);
     return client.query(`
-            INSERT into users (email, hash, display_name)
-            VALUES ($1, $2, $3)
-            RETURNING id, email, display_name as "displayName";
+            INSERT into users (email, hash)
+            VALUES ($1, $2)
+            RETURNING id, email;
         `,
-    [user.email, hash, user.displayName]
+    [user.email, hash]
     ).then(result => result.rows[0]);
   }
 });
@@ -36,19 +37,25 @@ const authRoutes = createAuthRoutes({
 // setup authentication routes to give user an auth token
 // creates a /signin and a /signup route. 
 // each requires a POST body with a .email and a .password
-app.use('/api/auth', authRoutes);
+app.use('/auth', authRoutes);
 
 // everything that starts with "/api" below here requires an auth token!
 app.use('/api', ensureAuth);
 
-app.get('/api/test', (req, res) => {
-  res.json({
-    message: `in this proctected route, we get the user's id like so: ${req.userId}`
-  });
+// app.get('/api/test', (req, res) => {
+//   res.json({
+//     message: `in this proctected route, we get the user's id like so: ${req.userId}`
+//   });
+// });
+
+app.get('/api/todos', async(req, res) => {
+  const data = await client.query('SELECT * from todos');
+
+  res.json(data.rows);
 });
 
-app.get('/todos', async(req, res) => {
-  const data = await client.query('SELECT * from todos');
+app.post('/api/todos', async(req, res) => {
+  const data = await client.query('INSERT into todos()');
 
   res.json(data.rows);
 });
