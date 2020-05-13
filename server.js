@@ -37,7 +37,7 @@ const authRoutes = createAuthRoutes({
 // setup authentication routes to give user an auth token
 // creates a /signin and a /signup route. 
 // each requires a POST body with a .email and a .password
-app.use('/auth', authRoutes);
+app.use('/api/auth', authRoutes);
 
 // everything that starts with "/api" below here requires an auth token!
 app.use('/api', ensureAuth);
@@ -49,13 +49,14 @@ app.use('/api', ensureAuth);
 // });
 
 app.get('/api/todos', async(req, res) => {
-  const data = await client.query('SELECT * from todos');
-
+  const userId = req.userId;
+  const data = await client.query('SELECT * from todos where id=$1', [req.userId]);
   res.json(data.rows);
 });
 
 app.post('/api/todos', async(req, res) => {
-  const data = await client.query('INSERT into todos()');
+  const data = await client.query(`INSERT into todos (name, cool_factor, time_needed, owner_id)'
+  VALUES ($1, $2, $3, $4) returning *` [req.body.name, req.body.cool_factor, req.body.time_needed, req.userId]);
 
   res.json(data.rows);
 });

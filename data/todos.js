@@ -1,14 +1,17 @@
 module.exports = [
   {
-    name: 'bessie',
-    cool_factor: 3,
+    name: 'laundry',
+    cool_factor: 1,
+    time_needed: 100,
   },
   {
-    name: 'jumpy',
-    cool_factor: 4,
+    name: 'groceries',
+    cool_factor: 6,
+    time_needed: 120,
   },
   {
-    name: 'spot',
+    name: 'deposit paycheck',
     cool_factor: 10,
+    time_needed: 15,
   }
 ];

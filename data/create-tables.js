@@ -20,7 +20,9 @@ async function run() {
                     id SERIAL PRIMARY KEY NOT NULL,
                     name VARCHAR(512) NOT NULL,
                     cool_factor INTEGER NOT NULL,
-                    owner_id INTEGER NOT NULL REFERENCES users(id)
+                    time_needed INTEGER NOT NULL,
+                    completed BOOLEAN DEFAULT FALSE,
+                    owner_id INTEGER NOT NULL REFERENCES, users(id)
             );
         `);
 
