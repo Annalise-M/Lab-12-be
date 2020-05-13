@@ -22,7 +22,7 @@ async function run() {
                     cool_factor INTEGER NOT NULL,
                     time_needed INTEGER NOT NULL,
                     completed BOOLEAN DEFAULT FALSE,
-                    owner_id INTEGER NOT NULL REFERENCES, users(id)
+                    owner_id INTEGER NOT NULL REFERENCES users(id)
             );
         `);
 

@@ -55,7 +55,7 @@ app.get('/api/todos', async(req, res) => {
 });
 
 app.post('/api/todos', async(req, res) => {
-  const data = await client.query(`INSERT into todos (name, cool_factor, time_needed, owner_id)'
+  const data = await client.query(`INSERT into todos (name, cool_factor, time_needed, owner_id)
   VALUES ($1, $2, $3, $4) returning *` [req.body.name, req.body.cool_factor, req.body.time_needed, req.userId]);
 
   res.json(data.rows);
