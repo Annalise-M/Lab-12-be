@@ -16,7 +16,7 @@ describe('app routes', () => {
     // TODO: ADD CLOSE DB SCRIPT
   });
 
-  test('returns animals', async() => {
+  test('returns todos', async() => {
 
     const expectation = [
       {
@@ -40,7 +40,7 @@ describe('app routes', () => {
     ];
 
     const data = await fakeRequest(app)
-      .get('/animals')
+      .get('/todos')
       .expect('Content-Type', /json/)
       .expect(200);
 
